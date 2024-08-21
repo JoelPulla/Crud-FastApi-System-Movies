@@ -1,0 +1,4 @@
+*venv
+*__init__.py
+*database.sqlite
+*__pycache__
