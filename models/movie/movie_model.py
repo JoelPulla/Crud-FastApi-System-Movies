@@ -6,6 +6,7 @@ class MovieModel(Base):
     
     __tablename__ = 'movie'
     id = Column(Integer, primary_key=True)
+    category_id= Column(Integer)
     movie_title = Column(String)
     overview= Column(String)
     id_tmdb = Column(Integer)

@@ -3,15 +3,14 @@ from fastapi.responses import JSONResponse
 from config.db import Session
 from datetime import datetime, timedelta
 
-from schema.movie_schema import Movie
-from models.movie_model import MovieModel
+from schema.movie.movie_schema import Movie
+from models.movie.movie_model import MovieModel
 
 router = APIRouter()
 #Colsult All Movies
 
 ### Goblar var pagination ###
 limit_results:int = 20
-
 
 @router.get('/movie/all_movie', tags=['movie'], status_code= 200, )
 def get_all_movies(page: int):
@@ -54,8 +53,6 @@ def now_playing(page: int):
         "total items": total_results,
         "total_pages": total_page
     } 
-
-
     
 #Cretae Movies
 @router.post('/movie/create', tags=['movie'], status_code=200, response_model= dict)
@@ -102,3 +99,4 @@ def update_movie(id: int, movie: Movie)-> dict:
     
     return JSONResponse( status_code=200, content={"message": "success"})
     
+""" Filter for category """

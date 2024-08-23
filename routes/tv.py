@@ -1,8 +1,8 @@
 from fastapi import APIRouter 
 from fastapi.responses import JSONResponse
 from config.db import Session
-from schema.tv_schema import Tv
-from models.tv_model import TvModel
+from schema.tv.tv_schema import Tv
+from models.tv.tv_model import TvModel
 
 router = APIRouter()
 

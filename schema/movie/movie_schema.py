@@ -4,7 +4,8 @@ from datetime import date
 
 class Movie(BaseModel):
     
-    id : Optional[int] = None
+    id: Optional[int] = None
+    category_id: Optional[int]= None
     movie_title  : str
     overview : str
     id_tmdb : Optional[int]= None
