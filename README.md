@@ -69,9 +69,10 @@ Este proyecto es una API para la gestión de películas y categorías, desarroll
 ├── requirements.txt           # Lista de dependencias del proyecto
 └── README.md                  # Documentación del proyecto
 
+```
+## ** Base de datos**
 
-## **Base de datos**
-
+```BDD
 +--------------------+          +-------------------+          +----------------------+
 |      movie         |          |    movie_category |          |      category         |
 +--------------------+          +-------------------+          +----------------------+
@@ -88,3 +89,6 @@ Este proyecto es una API para la gestión de películas y categorías, desarroll
 | created_at         |
 | release            |
 +--------------------+
+                  # Documentación del proyecto
+
+```
