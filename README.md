@@ -70,3 +70,21 @@ Este proyecto es una API para la gestión de películas y categorías, desarroll
 └── README.md                  # Documentación del proyecto
 
 
+## **Base de datos**
+
++--------------------+          +-------------------+          +----------------------+
+|      movie         |          |    movie_category |          |      category         |
++--------------------+          +-------------------+          +----------------------+
+| id (PK)            |<---------| movie_id (FK)     |          | id (PK)              |
+| movie_title        |          | category_id (FK)  |--------->| name                 |
+| overview           |          +-------------------+          | is_active            |
+| id_tmdb            |                                          | created_at           |
+| url_video          |                                          | posther_path         |
+| is_youtube         |                                          +----------------------+
+| poster_path        |
+| background_path    |
+| voute_range        |
+| popularity         |
+| created_at         |
+| release            |
++--------------------+
