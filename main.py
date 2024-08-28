@@ -5,9 +5,7 @@ from config.db import Base, engine, Session
 from models.tv.tv_model import TvModel
 from models.tv.category_tv import CategoryTv
 
-from models.movie.movie_model import MovieModel
-from models.movie.category_model import CategoryModel
-from models.movie.movie_category import MovieCategory
+from models.movie.movie_category import movie_category, MovieModel, CategoryModel
 
 
 ##### INSTANCE MY APP #####

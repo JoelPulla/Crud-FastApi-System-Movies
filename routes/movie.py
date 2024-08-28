@@ -3,10 +3,7 @@ from fastapi.responses import JSONResponse
 from config.db import Session
 
 from schema.movie.category import Movie, MovieCreate
-
-from models.movie.movie_model import MovieModel
-from models.movie.category_model import CategoryModel
-from models.movie.movie_category import MovieCategory as MovieCategoryModel
+from models.movie.movie_category import MovieModel, CategoryModel, movie_category
 
 router = APIRouter()
 
@@ -14,10 +11,14 @@ router = APIRouter()
 limit_results:int = 20
 
 #Cretae Movies
-@router.post('/movie/create', tags=['movie'], status_code=200, response_model= dict)
-def create_movie(movie: MovieCreate) -> dict:
+@router.post('/movie/create', tags=['movie'])
+def create_movie(movie: MovieCreate):
     db = Session()
-    new_movie = MovieModel(
+    results = db.query(MovieModel).filter(MovieModel.movie_title == movie.movie_title).first()
+    if results:
+        JSONResponse(status_code=409, content={"message": "Pelicula con ese titulo ya existe"})
+    
+    db_movie = MovieModel(
         movie_title=movie.movie_title,
         overview=movie.overview,
         id_tmdb=movie.id_tmdb,
@@ -25,26 +26,23 @@ def create_movie(movie: MovieCreate) -> dict:
         is_youtube=movie.is_youtube,
         poster_path=movie.poster_path,
         background_path=movie.background_path,
-        vote_range=movie.vote_range,
+        voute_range=movie.voute_range,
         popularity=movie.popularity,
         created_at=movie.created_at,
-        release=movie.release
+        release=movie.release,
     )
-    db.add(new_movie)
+    
+    # Asignar categorías
+    if movie.category_ids:
+        categories = db.query(CategoryModel).filter(CategoryModel.id.in_(movie.category_ids)).all()
+        db_movie.categories = categories
+        
+        
+    db.add(db_movie)
     db.commit()
-    db.refresh(new_movie) 
-    
-    # Asociar las categorías utilizando la tabla de unión
-    category_ids = movie.category_ids
-    for category_id in category_ids:
-        category = db.query(CategoryModel).get(category_id)
-        if category:
-            movie_category = MovieCategoryModel(movie_id=new_movie.id, category_id=category.id)
-            db.add(movie_category)
-    
-    db.commit()
-    
+    db.refresh(db_movie)     
     return JSONResponse(status_code=200, content= {"messagge": "success"})
+
 
 
 

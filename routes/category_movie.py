@@ -1,10 +1,9 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-from config.db import Session
-from models.movie.category_model import CategoryModel
-from schema.movie.category import CategoryCreate, Movie, Category
-from models.movie.movie_model import MovieModel
 from sqlalchemy import func
+from config.db import Session
+from models.movie.movie_category import MovieModel, CategoryModel
+from schema.movie.category import CategoryCreate, Movie, Category
 
 router = APIRouter()
 
