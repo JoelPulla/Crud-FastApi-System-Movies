@@ -1,16 +1,52 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from config.db import Session
-from datetime import datetime, timedelta
 
-from schema.movie.movie_schema import Movie
+from schema.movie.category import Movie, MovieCreate
+
 from models.movie.movie_model import MovieModel
+from models.movie.category_model import CategoryModel
+from models.movie.movie_category import MovieCategory as MovieCategoryModel
 
 router = APIRouter()
-#Colsult All Movies
 
 ### Goblar var pagination ###
 limit_results:int = 20
+
+#Cretae Movies
+@router.post('/movie/create', tags=['movie'], status_code=200, response_model= dict)
+def create_movie(movie: MovieCreate) -> dict:
+    db = Session()
+    new_movie = MovieModel(
+        movie_title=movie.movie_title,
+        overview=movie.overview,
+        id_tmdb=movie.id_tmdb,
+        url_video=movie.url_video,
+        is_youtube=movie.is_youtube,
+        poster_path=movie.poster_path,
+        background_path=movie.background_path,
+        vote_range=movie.vote_range,
+        popularity=movie.popularity,
+        created_at=movie.created_at,
+        release=movie.release
+    )
+    db.add(new_movie)
+    db.commit()
+    db.refresh(new_movie) 
+    
+    # Asociar las categorías utilizando la tabla de unión
+    category_ids = movie.category_ids
+    for category_id in category_ids:
+        category = db.query(CategoryModel).get(category_id)
+        if category:
+            movie_category = MovieCategoryModel(movie_id=new_movie.id, category_id=category.id)
+            db.add(movie_category)
+    
+    db.commit()
+    
+    return JSONResponse(status_code=200, content= {"messagge": "success"})
+
+
 
 @router.get('/movie/all_movie', tags=['movie'], status_code= 200, )
 def get_all_movies(page: int):
@@ -54,15 +90,6 @@ def now_playing(page: int):
         "total_pages": total_page
     } 
     
-#Cretae Movies
-@router.post('/movie/create', tags=['movie'], status_code=200, response_model= dict)
-def create_movie(movie: Movie) -> dict:
-    db = Session()
-    new_movie = MovieModel(**movie.model_dump())
-    db.add(new_movie)
-    db.commit()
-    
-    return JSONResponse(status_code=200, content= {"messagge": "success"})
 
 #Delete Movies
 @router.delete('/movie/delete/{id}',tags=['movie'])

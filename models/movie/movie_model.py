@@ -1,12 +1,12 @@
 from config.db import Base
 from sqlalchemy import Column, Integer, String, Boolean, Double, Date
-
+from sqlalchemy.orm import relationship
+from models.movie.movie_category import MovieCategory
 
 class MovieModel(Base):
     
     __tablename__ = 'movie'
     id = Column(Integer, primary_key=True)
-    category_id= Column(Integer)
     movie_title = Column(String)
     overview= Column(String)
     id_tmdb = Column(Integer)
@@ -18,3 +18,7 @@ class MovieModel(Base):
     popularity = Column(Double)
     created_at = Column(Date)
     release = Column(Date)
+    
+    
+    """Relacion con categoria"""
+    categories = relationship("MovieCategory",back_populates="movie" )
