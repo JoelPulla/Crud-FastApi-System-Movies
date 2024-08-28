@@ -4,7 +4,7 @@ from config.db import Session
 
 from models.movie.movie_category_model import MovieModel, CategoryModel
 
-from schema.movie.category import Movie, MovieCreate
+from schema.movie.movie_category_schema import Movie, MovieCreate
 
 router = APIRouter()
 
