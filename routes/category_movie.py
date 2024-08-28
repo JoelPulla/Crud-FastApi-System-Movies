@@ -2,11 +2,12 @@ from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from sqlalchemy import func
 from config.db import Session
-from models.movie.movie_category import MovieModel, CategoryModel
-from schema.movie.category import CategoryCreate, Movie, Category
+
+
+from models.movie.movie_category_model import CategoryModel,  MovieModel
+from schema.movie.category import CategoryCreate, Movie
 
 router = APIRouter()
-
 
 @router.get('/movie/category', tags=['movie/category'], )
 def get_all_category():
@@ -16,8 +17,6 @@ def get_all_category():
         return []
     
     return reslts
-
-
 
 @router.post('/movie/category/create', tags=['movie/category'], response_model=dict)
 def create_category(category: CategoryCreate)-> dict:
@@ -31,7 +30,6 @@ def create_category(category: CategoryCreate)-> dict:
 
     return JSONResponse(status_code=200, content= {"message":"success"})
 
-
 @router.delete('/movie/category/delete/{id}', tags=['movie/category'])
 def delete_category(id:int):
     
@@ -43,20 +41,13 @@ def delete_category(id:int):
     db.commit()
     return JSONResponse(status_code=202, content={"message": "eliminado con exito"})
 
-
-
-# @router.post('/movie/category/asosiate_mov_cat', tags=['movie/category'])
-# def asosiation_movie_category(idmovie: int, idcat: int):
-    
+@router.get('/movie/category/{id}/movies', tags=['movie/category'], response_model=list[Movie])
+def movies_by_category(id:int):
     db = Session()
-    r_movie = db.query(MovieModel).filter(MovieModel.id == idmovie).first()
-    r_category = db.query(CategoryModel).filter(CategoryModel.id == idcat).filter()
+    page = 0
     
-    if not r_movie or not r_category:
-        return JSONResponse(status_code=404, content={"message": "categoria o pelicula no existe"} )
+    movies = db.query(MovieModel).join(MovieModel.categories).filter(CategoryModel.id == id).all()
     
-    
-    # r_movie.categories.append(r_category)
-    # db.commit()
-    
-    return {"message":"relation insert"}
+   
+    # Retornar las películas de la categoría
+    return movies

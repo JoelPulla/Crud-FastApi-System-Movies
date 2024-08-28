@@ -6,7 +6,6 @@ from models.tv.tv_model import TvModel
 
 router = APIRouter()
 
-
 @router.post('/tv', tags=['tv'], response_model=dict, status_code=200)
 def createTv(tv: Tv) -> dict:
     db = Session()
@@ -15,14 +14,12 @@ def createTv(tv: Tv) -> dict:
     db.commit() 
     return JSONResponse( status_code= 201, content={"message": "succes"})
 
-
 @router.get('/tv', tags=['tv'], response_model=list[Tv])
 def getAllTv()-> list[Tv]:
     db = Session()
     resul =  db.query(TvModel).all()
     return resul
-    
-    
+     
 @router.delete('/tv/{id}', tags=['tv'], )
 def deleteTv(id: int):
     db = Session()
@@ -32,8 +29,6 @@ def deleteTv(id: int):
     db.delete(tv)
     db.commit()
     return JSONResponse(status_code=200, content= {"message":"succes"})
-
-
 
 @router.put('/tv/{id}', tags=['tv'], response_model=dict, status_code=200)
 def editTv(id:int, tv: Tv)-> dict:

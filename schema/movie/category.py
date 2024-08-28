@@ -2,8 +2,6 @@ from pydantic import BaseModel
 from typing import Optional, List
 from datetime import date
 
-
-
 #Schema para crear un categoria
 class CategoryCreate(BaseModel):
     name: str
@@ -23,7 +21,6 @@ class Category(BaseModel):
         
 # Schema para crear una pelicula
 class MovieCreate(BaseModel):
-    
     movie_title  : str
     overview : str
     id_tmdb : Optional[int]= None
@@ -40,7 +37,6 @@ class MovieCreate(BaseModel):
     class Config:
         orm_mode = True
     
-
 # Schema para devolver una movie
 class Movie(BaseModel):
     

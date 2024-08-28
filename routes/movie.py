@@ -2,8 +2,9 @@ from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from config.db import Session
 
+from models.movie.movie_category_model import MovieModel, CategoryModel
+
 from schema.movie.category import Movie, MovieCreate
-from models.movie.movie_category import MovieModel, CategoryModel, movie_category
 
 router = APIRouter()
 
@@ -43,9 +44,7 @@ def create_movie(movie: MovieCreate):
     db.refresh(db_movie)     
     return JSONResponse(status_code=200, content= {"messagge": "success"})
 
-
-
-
+# Search all movies
 @router.get('/movie/all_movie', tags=['movie'], status_code= 200, )
 def get_all_movies(page: int):
     
@@ -62,6 +61,7 @@ def get_all_movies(page: int):
         "total_results":total_results    
     }
 
+# Search movi by name 
 @router.get('/search/movie', tags=['movie'])
 def search_movie_name(name: str)-> list[Movie]:
     db = Session()
@@ -88,7 +88,6 @@ def now_playing(page: int):
         "total_pages": total_page
     } 
     
-
 #Delete Movies
 @router.delete('/movie/delete/{id}',tags=['movie'])
 def delete_movie(id:int):
@@ -101,6 +100,7 @@ def delete_movie(id:int):
     db.commit()
     return JSONResponse(status_code=200, content={"message": "delete movie"})
 
+# Update
 @router.put('/movie/update/{id}', tags=['movie'])
 def update_movie(id: int, movie: Movie)-> dict:
     db = Session()
@@ -124,4 +124,3 @@ def update_movie(id: int, movie: Movie)-> dict:
     
     return JSONResponse( status_code=200, content={"message": "success"})
     
-""" Filter for category """
